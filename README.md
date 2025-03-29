@@ -1,6 +1,6 @@
-# Aptos Paymaster Transaction Example
+# Aptos Paymaster Transaction API Example
 
-This project demonstrates how to use the Kana Labs Paymaster SDK to sponsor transactions on the Aptos blockchain. It includes functionalities for checking whitelisting status, adding an address to the whitelist, and executing a gasless transaction using a paymaster service.
+This project demonstrates how to use sponsor transactions on the Aptos blockchain. It includes functionalities for checking whitelisting status, adding an address to the whitelist, and executing a gasless transaction using a paymaster service.
 
 ## 📌 Prerequisites
 
@@ -59,7 +59,7 @@ npm run start
 
 ## 📜 How It Works
 
-1. Initialize Aptos Client & Paymaster SDK
+1. Initialize Aptos Client
 
    - Connects to the Aptos blockchain
 
@@ -100,7 +100,7 @@ txn status true
 ## 🔗 References
 Aptos SDK: https://github.com/aptos-labs/aptos-ts-sdk
 
-Kana Labs Paymaster SDK: https://docs.kanalabs.io/paymaster-service/kana-paymaster-for-aptos-and-supra
+Kana Labs Paymaster: https://docs.kanalabs.io/paymaster-service/kana-paymaster-for-aptos-and-supra
 
 ## 🛠️ Troubleshooting
 ### Common Issues & Fixes
