@@ -10,6 +10,7 @@ import {
   } from "@aptos-labs/ts-sdk";
 import { apiKey, aptosNetwork } from "./constants";
 import "dotenv/config";
+import { ApiResponse } from "@kanalabs/paymaster-sdk";
 
 export function getBaseUrl(paymasterUrl: string) {
     return paymasterUrl;
@@ -22,6 +23,45 @@ export function getCommonHeaders(paymasterApikey: string) {
       network: aptosNetwork,
     };
   }
+
+
+  export async function isWhitelisted(args: { address?: string }): Promise<ApiResponse> {
+    const url = "https://paymaster.kanalabs.io/isWhitelisted"
+    const query: any = { address: args?.address }
+    const params = new URLSearchParams(query).toString()
+    const headers = getCommonHeaders(apiKey)
+    try {
+      const response = await fetch(`${url}?${params}`, { headers, method: 'GET' })
+      if (response.status >= 400) {
+        await response.json().then((data) => {
+          throw new Error(data?.error || data?.message || 'Error in checking whitelist status.')
+        })
+      }
+      return await response.json()
+    } catch (error: any) {
+      throw error?.data || error
+    }
+  }
+
+  export async function addToWhitelist(args: { address?: string }): Promise<ApiResponse> {
+    const url = "https://paymaster.kanalabs.io/addToWhitelist"
+    const query: any = { user_address: args?.address }
+    const params = new URLSearchParams(query).toString()
+
+    const headers = getCommonHeaders(apiKey)
+    try {
+      const response = await fetch(`${url}?${params}`, { headers, method: 'GET' })
+      if (response.status >= 400) {
+        await response.json().then((data) => {
+          throw new Error(data?.error || data?.message || 'Error in adding user to whitelist.')
+        })
+      }
+      return await response.json()
+    } catch (error: any) {
+      throw error?.data || error
+    }
+  }
+
 
   export async function sponsoredTxnWithSenderAuth(args: {
     transaction: AnyRawTransaction;

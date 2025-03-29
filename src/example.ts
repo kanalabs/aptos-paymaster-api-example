@@ -5,13 +5,14 @@ import {
     Network,
     Aptos,
     Account,
+    Ed25519PrivateKey,
   } from "@aptos-labs/ts-sdk";
   import { chainName, PaymasterSdk } from "@kanalabs/paymaster-sdk";
   import {
     TransactionOptions,
   } from "@kanalabs/paymaster-sdk/lib/interfaces";  
-import { apiKey, aptosNetwork } from "./helpers/constants";
-import { sponsoredTxnWithSenderAuth } from "./helpers/helper";
+import { apiKey, aptosNetwork, privateKey } from "./helpers/constants";
+import { addToWhitelist, isWhitelisted, sponsoredTxnWithSenderAuth } from "./helpers/helper";
 import "dotenv/config";
   
   const test = async () => {
@@ -40,29 +41,26 @@ import "dotenv/config";
           chain: chainName.Aptos, // default aptos chain
         }
       );
+
+      const senderAccount = Account.fromPrivateKey({
+        privateKey: new Ed25519PrivateKey(privateKey)
+    })
+      console.log("senderAccount: ", senderAccount.accountAddress.toString());
   
-      const senderAccount = Account.generate();
-      console.log("senderAccount: ", senderAccount);
-  
-      const isWhitelisted = await sdk.isWhitelisted({
+      const Whitelisted = await isWhitelisted({
         address: senderAccount.accountAddress.toString(),
       });
-      console.log("isWhitelisted: ", isWhitelisted);
+      console.log("isWhitelisted: ", Whitelisted);
 
   
-      if (!(isWhitelisted.message == "whitelisted")) {
+      if (!(Whitelisted.message == "whitelisted")) {
         console.log("not whitelisted");
         console.log(
-          await sdk.addToWhitelist({
+          await addToWhitelist({
             address: senderAccount.accountAddress.toString(),
           })
         );
       }
-      console.log(
-        await sdk.initAccount({
-          address: senderAccount.accountAddress.toString(),
-        })
-      );
   
       const transaction = await aptosClient.transaction.build.simple({
         sender: senderAccount.accountAddress.toString(),
