@@ -98,7 +98,7 @@ response: { hash: "0x123456789" }
 txn status true
 ```
 ## 🔗 References
-Aptos SDK: https://github.com/aptos-labs/ts-sdk
+Aptos SDK: https://github.com/aptos-labs/aptos-ts-sdk
 
 Kana Labs Paymaster SDK: https://docs.kanalabs.io/paymaster-service/kana-paymaster-for-aptos-and-supra
 
