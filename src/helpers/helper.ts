@@ -10,7 +10,7 @@ import {
   } from "@aptos-labs/ts-sdk";
 import { apiKey, aptosNetwork } from "./constants";
 import "dotenv/config";
-import { ApiResponse } from "@kanalabs/paymaster-sdk";
+// import { ApiResponse } from "@kanalabs/paymaster-sdk";
 
 export function getBaseUrl(paymasterUrl: string) {
     return paymasterUrl;
@@ -25,7 +25,7 @@ export function getCommonHeaders(paymasterApikey: string) {
   }
 
 
-  export async function isWhitelisted(args: { address?: string }): Promise<ApiResponse> {
+  export async function isWhitelisted(args: { address?: string }): Promise<any> {
     const url = "https://paymaster.kanalabs.io/isWhitelisted"
     const query: any = { address: args?.address }
     const params = new URLSearchParams(query).toString()
@@ -43,7 +43,7 @@ export function getCommonHeaders(paymasterApikey: string) {
     }
   }
 
-  export async function addToWhitelist(args: { address?: string }): Promise<ApiResponse> {
+  export async function addToWhitelist(args: { address?: string }): Promise<any> {
     const url = "https://paymaster.kanalabs.io/addToWhitelist"
     const query: any = { user_address: args?.address }
     const params = new URLSearchParams(query).toString()

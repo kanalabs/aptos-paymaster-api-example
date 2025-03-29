@@ -6,12 +6,8 @@ import {
     Aptos,
     Account,
     Ed25519PrivateKey,
-  } from "@aptos-labs/ts-sdk";
-  import { chainName, PaymasterSdk } from "@kanalabs/paymaster-sdk";
-  import {
-    TransactionOptions,
-  } from "@kanalabs/paymaster-sdk/lib/interfaces";  
-import { apiKey, aptosNetwork, privateKey } from "./helpers/constants";
+  } from "@aptos-labs/ts-sdk"; 
+import { aptosNetwork, privateKey } from "./helpers/constants";
 import { addToWhitelist, isWhitelisted, sponsoredTxnWithSenderAuth } from "./helpers/helper";
 import "dotenv/config";
   
@@ -28,22 +24,13 @@ import "dotenv/config";
         typeArguments: ["0x1::aptos_coin::AptosCoin"],
       };
   
-      const options: TransactionOptions = {
+      const options: any = {
         gasUnitPrice: 100,
         maxGasAmount: 2000,
       };
-  
-      const sdk = new PaymasterSdk(
-        {},
-        {
-          projectKey: apiKey,
-          network: aptosNetwork as Network,
-          chain: chainName.Aptos, // default aptos chain
-        }
-      );
 
       const senderAccount = Account.fromPrivateKey({
-        privateKey: new Ed25519PrivateKey(privateKey)
+        privateKey: new Ed25519PrivateKey(privateKey || '')
     })
       console.log("senderAccount: ", senderAccount.accountAddress.toString());
   
@@ -71,7 +58,7 @@ import "dotenv/config";
           console.log("transaction: ", transaction);
   
   
-      const senderAuth = sdk.aptosClient.transaction.sign({
+      const senderAuth = aptosClient.transaction.sign({
         signer: senderAccount,
         transaction: transaction,
       });
@@ -84,7 +71,7 @@ import "dotenv/config";
   
       console.log("response: ", response);
       if ((response as PendingTransactionResponse).hash) {
-        const txnreceipt = (await sdk.aptosClient.waitForTransaction({
+        const txnreceipt = (await aptosClient.waitForTransaction({
           transactionHash: (response as PendingTransactionResponse).hash,
           options: { checkSuccess: true },
         })) as UserTransactionResponse;
